@@ -34,7 +34,39 @@ During post-processing, underscores were substituted with spaces, and plural for
 |----------------|----------------------------------|-------------------------------------------|
 | circumstantial, clang association, delusion, derailment, flight of idea, formal thought disorder, hallucination, knights move thinking, loosening of association, paranoia, persecutory idea, psychosi, psychotic, running commentary, somatic passivity, tangential, thought alienation, thought block, thought disorder, thought interference | abnormal belief, abnormal perception, deluded, hallicinat, hallucat, halluciant, halluciat, hallucinat, hallucnat, halluicnat, halucinat, passivity, persecutory, though broadcast, thought blocked, thought broadcast, thought disordered, thought echo, thought insertion, thought withdrawal | aggitation, altered perception, auditory disturbance, bizarre behaviour, bizarre belief, bizarre idea, clanging, delusion-like, delusionary disjoint, disordered, disorganis, echolalia, elated mood, elation, flat affect, ftd, grandiose, guarded, halluc, highly agitated, highly aroused, highly distressed, hostile, hostility, hypomanic, illogical, illusion, incoherence, incoherent, jealousy, knights move, loose association, manic, mute, neologism, nihilistic idea, odd belief, olfactory, over inclusive, over valued, overvalued, paranoid, parnoid, perceptual abnormalit, perceptual disturbance, pressured, referential, religiou, religious theme, running commentarie, seeing shadow, seeing shape, somatic, special abilitie, suspicion, suspicious guarded, suspiciousne, tactile, tangencial, tangenital, third person, unusual belief, unusual experience, word salad |
 
-Table 2， Psychosis-related keyword lists generated from previous research.
+Table 2. Psychosis-related keyword lists generated from previous research.
 
 ### References
 ```[1] Viani N, Patel R, Stewart R, Velupillai S. Generating positive psychosis symptom keywords from electronic health records. Paper presented at: Conference on Artificial Intelligence in Medicine in Europe2019.![image](https://github.com/ningkko/psychosis_identification/assets/9314823/150871cd-1db5-4c88-a911-6e7b37863001)```
+
+
+
+## Step 2. Psychosis Identification on Admission Notes via Semi-Supervised Learning 
+**INTRODUCTION**\
+A previous portion of this project has established that deep learning-based classifiers significantly improve the identification process for psychosis, outperforming traditional keyword-based methods, ICD code reliance, and various machine learning approaches. However, the intensive labor required for data annotation and the inherent opacity of the learning algorithms continue to present considerable challenges, particularly in terms of interpretability. To address these issues, the present study advances our prior efforts by integrating a semi-supervised training strategy with topic modeling analysis to understand the learning process of the model. 
+
+**MATERIALS AND METHODS**\
+**_Study Settings and Data Curation_**: This study (protocol approved by the MGB Human Research Committee) is conducted at McLean Hospital. We collected the initial psychiatric admission notes of 4,617 patients from the years 2005 to 2019 (psychosis vs. non-psychosis ~= 0.76:0.24).\
+Considering the limitation of our text embedder that accepts 512 tokens per input at maximum, we processed the notes by identifying and concatenating pertinent sentences using a dictionary developed in a parallel work. Further details of this procedure can be found in Step 1 Appendix.\
+The dataset was divided into two parts: a test set and an iterative training set. The test set was annotated at the outset, while the training set is annotated progressively during the iterative learning process.\
+**_Study Design_**: The iterative training process ((Fig. 1) begins with the division of the dataset of admission notes into a training set comprising 80% of the data (3,694 cases) and a test set comprising the remaining 20% (923 cases). The test set is annotated immediately for later evaluation. For the training set, an initial sample is randomly selected and annotated. This labeled data is then used to train and validate (split with an 80:20 ratio) a prediction model composed of BlueBERT pretrained layers and a linear classification layer.
+The model undergoes iterative fine-tuning, where in each iteration, it predicts and calculates uncertainty scores for unlabeled data with the entropy. The most uncertain cases (top 150) are then annotated by experts to create a newly labeled, which is then is merged with the previously labeled data, and the model is retrained and validated with this expanded dataset.
+Latent Dirichlet Allocation (LDA) topic analysis is applied to scrutinize the case types within the initially randomly selected cases, as well as those chosen by the model in each iteration. \
+
+![image](images/step2/figure1.png)\
+Figure 1.   Iterative training process for psychosis indentification. i denotes number of iterations. F1 was for model evaluation during trarining & validation due to class imbalance.
+
+**RESULTS**\
+Figure 2 illustrates the F1 score progression on the validation set in relation to the number of training and validation samples used. The trend indicates a consistent improvement in the score with each iteration of training. Table 1 presents the final performance metrics of the classification model when trained iteratively versus when trained on the full dataset. Remarkably, the iterative training approach, which utilizes approximately one-third of the training data, achieves better results, with an F1 score of 0.92 compared to 0.88 from the model trained on the full dataset.\
+Topic modeling reveal an evolving trend of training data themes. Initial rounds emphasize psychotic symptoms and hallucinations, indicating an acute focus on immediate mental health concerns. As the iterations progress, there was a noticeable shift towards broader themes like patient history and functioning. 
+
+![image](images/step2/figure1.png)\
+Figure 2. F1 Score Progression on Validation Sets.
+
+![image](images/step2/table1.png)\
+Table 1. Algorithm Performance on the Test Set.
+
+**DISCUSSION & CONCLUSION**\
+The study demonstrates that an iterative training approach on a carefully selected subset of data can enhance the performance of a deep learning classifier for identifying psychosis episodes in admission notes while substantially reducing annotation work. This result suggests that training on all available data may introduce noise, whereas focusing on the most uncertain cases allows the model to concentrate on features that are more indicative of the target outcome.\
+The topic modeling results reflect an adaptive and iterative process that mirrors the classifier’s learning, where the initial focus on acute symptoms transitions to include a broader and more comprehenssive assessment of patient history and functioning, mirroring the classifier's refinement in identifying relevant features.\
+Clinically, this implies that the model is not only learning to detect psychosis with high accuracy but is also aligning its learning trajectory with the clinical understanding of psychosis, which is multifaceted and evolves over time. Practically, this approach enhances the efficiency and transparency of psychosis detection, potentially supporting clinicians in making more informed decisions with a higher degree of confidence. The iterative training methodology, therefore, does not merely improve a metric; it could also lead to more clinically meaningful models that reflect the nuanced reality of psychiatric evaluation, ultimately contributing to better patient outcomes.
