@@ -40,8 +40,8 @@ Table 2. Psychosis-related keyword lists generated from previous research.
 ```[1] Viani N, Patel R, Stewart R, Velupillai S. Generating positive psychosis symptom keywords from electronic health records. Paper presented at: Conference on Artificial Intelligence in Medicine in Europe2019.![image](https://github.com/ningkko/psychosis_identification/assets/9314823/150871cd-1db5-4c88-a911-6e7b37863001)```
 
 
-
 ## Step 2. Psychosis Identification on Admission Notes via Semi-Supervised Learning 
+### Abstract
 **INTRODUCTION**\
 A previous portion of this project has established that deep learning-based classifiers significantly improve the identification process for psychosis, outperforming traditional keyword-based methods, ICD code reliance, and various machine learning approaches. However, the intensive labor required for data annotation and the inherent opacity of the learning algorithms continue to present considerable challenges, particularly in terms of interpretability. To address these issues, the present study advances our prior efforts by integrating a semi-supervised training strategy with topic modeling analysis to understand the learning process of the model. 
 
@@ -60,7 +60,7 @@ Figure 1.   Iterative training process for psychosis indentification. i denotes 
 Figure 2 illustrates the F1 score progression on the validation set in relation to the number of training and validation samples used. The trend indicates a consistent improvement in the score with each iteration of training. Table 1 presents the final performance metrics of the classification model when trained iteratively versus when trained on the full dataset. Remarkably, the iterative training approach, which utilizes approximately one-third of the training data, achieves better results, with an F1 score of 0.92 compared to 0.88 from the model trained on the full dataset.\
 Topic modeling reveal an evolving trend of training data themes. Initial rounds emphasize psychotic symptoms and hallucinations, indicating an acute focus on immediate mental health concerns. As the iterations progress, there was a noticeable shift towards broader themes like patient history and functioning. 
 
-![image](images/step2/figure1.png)\
+![image](images/step2/figure2.png)\
 Figure 2. F1 Score Progression on Validation Sets.
 
 ![image](images/step2/table1.png)\
