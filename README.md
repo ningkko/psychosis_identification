@@ -1,5 +1,5 @@
 # Psychosis identification from initial admission notes
-## Step 1. Identifying Psychosis Episodes in Admission Notes: Rule-based Methods, Machine Learning, and Pre-Trained Language Models
+## Step 1. [Identifying Psychosis Episodes in Admission Notes via Rule-based Methods, Machine Learning, and Pre-Trained Language Models](https://www.medrxiv.org/content/10.1101/2024.03.18.24304475v1)
 ### Abstract
 **INTRODUCTION**\
 Keyword-based searches and rule-based approaches are challenging to make use of identifying psychosis in admission notes. Inefficiencies could compromise treatment and early intervention. Our study investigates whether natural language processing via rule-based techniques, machine learning algorithms, and pre-trained language models (PLM) can improve admission note psychosis episode detection.
